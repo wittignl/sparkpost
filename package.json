@@ -1,46 +1,59 @@
 {
   "name": "sparkpost",
   "version": "2.1.4",
-  "description": "A Node.js wrapper for interfacing with your favorite SparkPost APIs",
-  "main": "./lib/sparkpost.js",
-  "scripts": {
-    "coveralls": "cat ./test/reports/lcov.info | coveralls",
-    "pretest": "eslint lib/**",
-    "test": "istanbul cover --report lcov --dir test/reports/ _mocha --recursive ./test/spec --grep ./test/**/*.spec.js -- --colors --reporter spec",
-    "postversion": "git push upstream && git push --tags upstream"
-  },
+  "description": "An updated version of the SparkPost client library for Node.js",
+  "type": "module",
+  "packageManager": "pnpm@10.10.0",
   "keywords": [
     "email",
     "messaging"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/SparkPost/node-sparkpost"
+    "url": "https://github.com/wittignl/sparkpost"
   },
   "author": "Message Systems, Inc.",
   "license": "Apache-2.0",
+  "contributors": [
+    {
+      "name": "Wittig B.V.",
+      "email": "info@wittig.nl",
+      "url": "https://www.wittig.nl/"
+    }
+  ],
   "bugs": {
-    "url": "https://github.com/SparkPost/node-sparkpost/issues"
+    "url": "https://github.com/wittignl/sparkpost/issues"
   },
-  "homepage": "https://github.com/SparkPost/node-sparkpost",
+  "homepage": "https://github.com/wittignl/sparkpost",
   "engines": {
-    "node": ">=4"
+    "node": ">=12"
   },
-  "devDependencies": {
-    "chai": "^3.5.0",
-    "chai-as-promised": "^6.0.0",
-    "coveralls": "^3.0.2",
-    "eslint": "^3.12.2",
-    "eslint-config-sparkpost": "1.3.1",
-    "istanbul": "^0.4.5",
-    "mocha": "^5.2.0",
-    "nock": "^9.0.0",
-    "sinon": "^1.17.5",
-    "sinon-as-promised": "^4.0.2",
-    "sinon-chai": "^2.8.0"
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "main": "./dist/index.cjs",
+  "types": "./dist/types/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "rslib build",
+    "dev": "rslib build --watch",
+    "test": "vitest run"
   },
   "dependencies": {
-    "lodash": "^4.17.2",
-    "request": "^2.79.0"
+    "es-toolkit": "^1.37.2",
+    "undici": "^7.9.0"
+  },
+  "devDependencies": {
+    "@rslib/core": "^0.6.9",
+    "@types/node": "^22.8.1",
+    "typescript": "^5.8.3",
+    "vitest": "^3.1.3",
+    "@total-typescript/tsconfig": "^1.0.4"
   }
 }

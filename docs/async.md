@@ -10,12 +10,12 @@ All our library methods return promises, so if you're a promise-fan, just do wha
 let client = new SparkPost(key);
 
 client.templates.get(id)
-  .then((data) => {
-    // this the full API response body
-  })
-  .catch((err) => {
-    // handle the sad error
-  });
+    .then((data) => {
+        // this the full API response body
+    })
+    .catch((err) => {
+        // handle the sad error
+    });
 ```
 
 ### Callbacks
@@ -26,11 +26,13 @@ If you're more of a callbacker, that works too. Pass a callback as the last argu
 let client = new SparkPost(key);
 
 client.templates.get(id, (err, data) => {
-  if (err) {
-    // handle the sad error
-    return;
-  }
 
-  // this is the full API response body
+    if (err) {
+
+        // handle the sad error
+        return;
+    }
+
+    // this is the full API response body
 });
 ```

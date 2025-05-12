@@ -1,0 +1,20 @@
+{
+  "extends": "@total-typescript/tsconfig/bundler/dom/library",
+  "compilerOptions": {
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "outDir": "./dist",
+    "sourceMap": true,
+    "sourceRoot": "./src",
+    "declaration": true,
+    "declarationDir": "./dist/types",
+    "declarationMap": true,
+    "resolveJsonModule": true
+  },
+  "include": ["./src/**/*.ts", "./src/**/*.d.ts"],
+  "exclude": ["**/dist", "**/node_modules", "**/.*/"]
+}
