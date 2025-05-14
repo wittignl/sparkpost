@@ -1,3 +1,9 @@
+## [1.0.2](https://github.com/wittignl/sparkpost/compare/v1.0.1...v1.0.2) (2025-05-14)
+
+### Bug Fixes
+
+* Corrected more types ([4026636](https://github.com/wittignl/sparkpost/commit/402663662aae2ae3b777f4a13c18027e39c33825))
+
 ## [1.0.1](https://github.com/wittignl/sparkpost/compare/v1.0.0...v1.0.1) (2025-05-14)
 
 ### Bug Fixes
