@@ -90,17 +90,17 @@ export class SparkPost {
     origin: string;
     apiVersion: string;
     debug: boolean;
-    inboundDomains: any;
-    messageEvents: any;
-    events: any;
-    recipientLists: any;
-    relayWebhooks: any;
-    sendingDomains: any;
-    subaccounts: any;
-    suppressionList: any;
-    templates: any;
-    transmissions: any;
-    webhooks: any;
+    inboundDomains: InboundDomains;
+    messageEvents: MessageEvents;
+    events: Events;
+    recipientLists: RecipientLists;
+    relayWebhooks: RelayWebhooks;
+    sendingDomains: SendingDomains;
+    subaccounts: Subaccounts;
+    suppressionList: SuppressionList;
+    templates: Templates;
+    transmissions: Transmissions;
+    webhooks: Webhooks;
 
     constructor(apiKey: string | SparkPostOptions, options?: SparkPostOptions) {
 
