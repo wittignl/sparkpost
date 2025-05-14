@@ -1,12 +1,14 @@
+import type { SparkPost } from "@/client";
 import type { RequestCb } from '@/types';
+import type { UpdateRelayWebhook } from "sparkpost";
 
 const api = 'relay-webhooks';
 
 export class RelayWebhooks {
 
-    private client: any;
+    private client: SparkPost;
 
-    constructor(client: any) {
+    constructor(client: SparkPost) {
 
         this.client = client;
     }
@@ -76,7 +78,7 @@ export class RelayWebhooks {
      * @param {RequestCb} [callback]
      * @returns {Promise}
      */
-    update(id: string, webhook: object, callback?: RequestCb): Promise<any> {
+    update(id: string, webhook: UpdateRelayWebhook, callback?: RequestCb): Promise<any> {
 
         if (!id || typeof id !== 'string') {
 

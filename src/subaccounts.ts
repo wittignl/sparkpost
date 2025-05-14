@@ -1,5 +1,6 @@
 import type { SparkPost } from '@/client';
 import type { RequestCb } from '@/types';
+import type { CreateSubaccount } from "sparkpost";
 
 const api = 'subaccounts';
 
@@ -53,7 +54,7 @@ export class Subaccounts {
      * @param {RequestCb} [callback]
      * @returns {Promise}
      */
-    create(subaccount: object, callback?: RequestCb): Promise<any> {
+    create(subaccount: CreateSubaccount, callback?: RequestCb): Promise<any> {
 
         if (!subaccount || typeof subaccount !== 'object') {
 

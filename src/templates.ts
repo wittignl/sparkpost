@@ -2,6 +2,7 @@ import type { SparkPost } from '@/client';
 import type { RequestCb } from '@/types';
 
 import { cloneDeep } from 'es-toolkit/compat';
+import type { CreateTemplate, UpdateTemplate } from "sparkpost";
 
 const api = 'templates';
 
@@ -65,7 +66,7 @@ export class Templates {
      * @param {RequestCb} [callback]
      * @returns {Promise<any>}
      */
-    create(template: any, callback?: RequestCb): Promise<any> {
+    create(template: CreateTemplate, callback?: RequestCb): Promise<any> {
 
         if (!template || typeof template !== 'object') {
 
@@ -89,7 +90,7 @@ export class Templates {
      * @param {RequestCb} [callback]
      * @returns {Promise<any>}
      */
-    update(id: string, template: any, options?: any, callback?: RequestCb): Promise<any> {
+    update(id: string, template: UpdateTemplate, options?: any, callback?: RequestCb): Promise<any> {
 
         // Handle optional options argument
         if (typeof options === 'function') {

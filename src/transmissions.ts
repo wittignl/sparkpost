@@ -1,6 +1,8 @@
+import type { CreateTransmission } from "sparkpost";
 import type { SparkPost } from './client';
 
 import { formatPayload } from './utils';
+import type { RequestCb } from "./types";
 
 const api = 'transmissions';
 
@@ -20,7 +22,7 @@ export class Transmissions {
      * @param {RequestCb} [callback]
      * @returns {Promise}
      */
-    list(options?: any, callback?: any): Promise<any> {
+    list(options?: any, callback?: RequestCb): Promise<any> {
 
         // Handle optional options argument
         if (typeof options === 'function') {
@@ -44,7 +46,7 @@ export class Transmissions {
      * @param {RequestCb} [callback]
      * @returns {Promise}
      */
-    get(id: string, callback?: any): Promise<any> {
+    get(id: string, callback?: RequestCb): Promise<any> {
 
         if (typeof id !== 'string') {
 
@@ -66,7 +68,7 @@ export class Transmissions {
      * @param {RequestCb} [callback]
      * @returns {Promise}
      */
-    send(transmission: any, options?: any, callback?: any): Promise<any> {
+    send(transmission: CreateTransmission, options?: any, callback?: RequestCb): Promise<any> {
 
         // Handle optional options argument
         if (typeof options === 'function') {

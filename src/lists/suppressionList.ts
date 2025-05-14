@@ -1,5 +1,6 @@
 import type { SparkPost } from '@/client';
 import type { RequestCb } from '@/types';
+import type { CreateSupressionListEntry } from "sparkpost";
 
 const api = 'suppression-list';
 
@@ -57,7 +58,7 @@ export class SuppressionList {
      * @param {RequestCb} [callback]
      * @return {Promise<any>}
      */
-    upsert(listEntries: Array<any> | Record<string, any>, callback?: RequestCb): Promise<any> {
+    upsert(listEntries: Array<CreateSupressionListEntry> | CreateSupressionListEntry, callback?: RequestCb): Promise<any> {
 
         if (!listEntries || typeof listEntries === 'function') {
 

@@ -1,6 +1,8 @@
+import type { Address, CreateTransmission, Recipient } from "sparkpost";
+
 import { cloneDeep, filter, has, isArray, isPlainObject, map, set } from 'es-toolkit/compat';
 
-export function formatPayload(originalTransmission: any): any {
+export function formatPayload(originalTransmission: CreateTransmission): CreateTransmission {
 
     const transmission = cloneDeep(originalTransmission);
 
@@ -11,7 +13,7 @@ export function formatPayload(originalTransmission: any): any {
     }
 
     // format all the original recipients to be in the object format
-    transmission.recipients = map(transmission.recipients, (recipient: any) => {
+    transmission.recipients = map(transmission.recipients, (recipient: Recipient) => {
 
         recipient.address = addressToObject(recipient.address);
         return recipient;
@@ -34,61 +36,73 @@ export function formatPayload(originalTransmission: any): any {
     return transmission;
 }
 
-export function addListToRecipients(transmission: any, listName: string, headerTo: string): any[] {
+export function addListToRecipients(transmission: CreateTransmission, listName: keyof CreateTransmission, headerTo: string): Recipient[] | { list_id: string } | undefined {
+
+    if (transmission == null) {
+
+        return [];
+    }
 
     if (!isArray(transmission[listName])) {
 
         return transmission.recipients;
     }
 
-    return transmission.recipients.concat(map(transmission[listName], (recipient: any) => {
+    return transmission.recipients && Array.isArray(transmission.recipients)
+        ? (transmission.recipients as Recipient[]).concat(
+            map(transmission[listName] as Recipient[], (recipient: Recipient) => {
+                const addressObj = addressToObject(recipient.address);
+                if (addressObj) {
+                    recipient.address = addressObj;
+                    if (typeof recipient.address === 'object') {
+                        recipient.address.header_to = headerTo;
 
-        recipient.address = addressToObject(recipient.address);
-        recipient.address.header_to = headerTo;
-
-        // remove name from address - name is only put in the header for cc and not at all for bcc
-        if (has(recipient.address, 'name')) {
-
-            delete recipient.address.name;
-        }
-
-        return recipient;
-    }));
+                        // remove name from address - name is only put in the header for cc and not at all for bcc
+                        if (has(recipient.address, 'name')) {
+                            delete recipient.address.name;
+                        }
+                    }
+                }
+                return recipient;
+            })
+        )
+        : undefined;
 }
 
+// TODO: Proper type
 export function generateCCHeader(transmission: any): string {
 
-    return map(transmission.cc, (ccRecipient: any) => addressToString(ccRecipient.address)).join(', ');
+    return map(transmission.cc, (ccRecipient: Recipient) => addressToString(ccRecipient.address)).join(', ');
 }
 
-export function generateHeaderTo(recipients: any[]): string {
+export function generateHeaderTo(recipients: Recipient[]): string {
 
     // if a recipient has a header_to then it is cc'd or bcc'd and we don't want it in the header_to value
-    const originalRecipients = filter(recipients, (recipient: any) => !has(recipient.address, 'header_to'));
+    const originalRecipients = filter(recipients, (recipient: Recipient) => !has(recipient.address, 'header_to'));
 
-    return map(originalRecipients, (recipient: any) => addressToString(recipient.address)).join(', ');
+    return map(originalRecipients, (recipient: Recipient) => addressToString(recipient.address)).join(', ');
 }
 
-export function addressToString(address: any): string {
+export function addressToString(address: Address | string | undefined): string | undefined {
 
     if (isPlainObject(address)) {
 
         if (has(address, 'name')) {
 
-            address = `"${address.name}" <${address.email}>`;
+            return `"${address.name}" <${address.email}>`;
         }
         else {
 
-            address = address.email;
+            return address.email;
         }
     }
 
     return address;
 }
 
-export function addressToObject(address: any): any {
+export function addressToObject(address: Address): Address {
 
-    let addressObject = address;
+    let addressObject: Address | Partial<Address> = cloneDeep(address);
 
     if (typeof address === 'string') {
 
@@ -107,5 +121,5 @@ export function addressToObject(address: any): any {
         }
     }
 
-    return addressObject;
+    return addressObject as Address;
 }

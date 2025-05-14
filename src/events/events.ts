@@ -1,12 +1,13 @@
+import type { SparkPost } from '@/client';
 import type { RequestCb } from '@/types';
 
 const api = 'events';
 
 export class Events {
 
-    private client: any;
+    private client: SparkPost;
 
-    constructor(client: any) {
+    constructor(client: SparkPost) {
 
         this.client = client;
     }

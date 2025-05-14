@@ -1,5 +1,6 @@
 import type { SparkPost } from '@/client';
 import type { RequestCb } from '@/types';
+import type { CreateSendingDomain } from "sparkpost";
 
 const api = 'sending-domains';
 
@@ -55,7 +56,7 @@ export class SendingDomains {
      * @param {RequestCb} [callback]
      * @return {Promise<any>}
      */
-    create(createOpts: object, callback?: RequestCb): Promise<any> {
+    create(createOpts: CreateSendingDomain, callback?: RequestCb): Promise<any> {
 
         if (!createOpts || typeof createOpts !== 'object') {
 
