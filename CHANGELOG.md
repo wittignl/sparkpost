@@ -1,3 +1,9 @@
+## [1.0.3](https://github.com/wittignl/sparkpost/compare/v1.0.2...v1.0.3) (2025-05-14)
+
+### Bug Fixes
+
+* Correct build errors. ([3cead68](https://github.com/wittignl/sparkpost/commit/3cead68e403a30b25567529b4f6e0d5f16062889))
+
 ## [1.0.2](https://github.com/wittignl/sparkpost/compare/v1.0.1...v1.0.2) (2025-05-14)
 
 ### Bug Fixes
