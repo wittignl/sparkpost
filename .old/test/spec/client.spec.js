@@ -5,7 +5,7 @@ var chai = require('chai'),
     sinon = require('sinon'),
     zlib = require('zlib'),
     nock = require('nock'),
-    SparkPost = require('../../lib/sparkpost'),
+    SparkPost = require('../../lib/client'),
     libVersion = require('../../package.json').version;
 
 chai.use(require('sinon-chai'));

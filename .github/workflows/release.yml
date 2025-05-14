@@ -31,6 +31,9 @@ jobs:
         with:
           app-id: ${{ vars.SEMANTIC_RELEASE_APP_ID }}
           private-key: ${{ secrets.SEMANTIC_RELEASE_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: |
+            sparkpost
 
       - name: Checkout
         uses: actions/checkout@v4
