@@ -107,7 +107,7 @@ export class Webhooks {
      * @param {RequestCb} [callback]
      * @returns {Promise}
      */
-    update(id: string, webhook: UpdateWebhook, callback?: RequestCb): Promise<any> {
+    update(id: string, webhook: any, callback?: RequestCb): Promise<any> {
 
         if (!id) {
 

@@ -100,9 +100,9 @@ export function addressToString(address: Address | string | undefined): string |
     return address;
 }
 
-export function addressToObject(address: Address): Address {
+export function addressToObject(address: string | Address | undefined): Address {
 
-    let addressObject: Address | Partial<Address> = cloneDeep(address);
+    let addressObject: string | Address | Partial<Address> | undefined = typeof address !== 'string' ? cloneDeep(address) : address;
 
     if (typeof address === 'string') {
 
