@@ -1,3 +1,9 @@
+## [1.0.4](https://github.com/wittignl/sparkpost/compare/v1.0.3...v1.0.4) (2025-05-14)
+
+### Bug Fixes
+
+* **npmrc:** Add token if available. ([971fc6e](https://github.com/wittignl/sparkpost/commit/971fc6e5c654e9133b7f291a40b10431c9043f71))
+
 ## [1.0.3](https://github.com/wittignl/sparkpost/compare/v1.0.2...v1.0.3) (2025-05-14)
 
 ### Bug Fixes
