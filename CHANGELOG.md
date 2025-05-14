@@ -1,3 +1,9 @@
+## [1.0.1](https://github.com/wittignl/sparkpost/compare/v1.0.0...v1.0.1) (2025-05-14)
+
+### Bug Fixes
+
+* Correct client class field types. ([b5b0371](https://github.com/wittignl/sparkpost/commit/b5b03711e197975a9c6b3b22f99e908eaab6de93))
+
 ## 1.0.0 (2025-05-14)
 
 ### Features
