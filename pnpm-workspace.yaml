@@ -1,3 +1,5 @@
+autoInstallPeers: true
+useNodeVersion: '22.14.0'
 onlyBuiltDependencies:
   - core-js
   - esbuild

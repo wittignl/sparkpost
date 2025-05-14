@@ -1,6 +1,6 @@
 {
-  "name": "sparkpost",
-  "version": "2.1.4",
+  "name": "@wittignl/sparkpost",
+  "version": "1.0.0",
   "description": "An updated version of the SparkPost client library for Node.js",
   "type": "module",
   "packageManager": "pnpm@10.10.0",
@@ -12,9 +12,19 @@
     "type": "git",
     "url": "https://github.com/wittignl/sparkpost"
   },
-  "author": "Message Systems, Inc.",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "author": {
+    "name": "Wittig",
+    "email": "info@wittig.nl",
+    "url": "https://www.wittig.nl/"
+  },
   "license": "Apache-2.0",
   "contributors": [
+    {
+      "name": "Message Systems, Inc."
+    },
     {
       "name": "Wittig B.V.",
       "email": "info@wittig.nl",
@@ -43,7 +53,11 @@
   "scripts": {
     "build": "rslib build",
     "dev": "rslib build --watch",
-    "test": "vitest run"
+    "test": "vitest run",
+    "lint": "biome lint --write",
+    "format": "dprint fmt",
+    "release": "semantic-release",
+    "prepack": "pnpm run build"
   },
   "dependencies": {
     "es-toolkit": "^1.37.2",
@@ -51,9 +65,13 @@
   },
   "devDependencies": {
     "@rslib/core": "^0.6.9",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "@total-typescript/tsconfig": "^1.0.4",
     "@types/node": "^22.8.1",
+    "conventional-changelog-conventionalcommits": "^8.0.0",
+    "semantic-release": "^24.2.3",
     "typescript": "^5.8.3",
-    "vitest": "^3.1.3",
-    "@total-typescript/tsconfig": "^1.0.4"
+    "vitest": "^3.1.3"
   }
 }
