@@ -1,3 +1,9 @@
+## [1.0.5](https://github.com/wittignl/sparkpost/compare/v1.0.4...v1.0.5) (2025-05-14)
+
+### Bug Fixes
+
+* Revert npmrc ([4d5d574](https://github.com/wittignl/sparkpost/commit/4d5d574ad7bcc297c7311ababee278abe5c51cdd))
+
 ## [1.0.4](https://github.com/wittignl/sparkpost/compare/v1.0.3...v1.0.4) (2025-05-14)
 
 ### Bug Fixes
