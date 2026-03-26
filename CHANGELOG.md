@@ -1,3 +1,10 @@
+## [1.1.0](https://github.com/wittignl/sparkpost/compare/v1.0.5...v1.1.0) (2026-03-26)
+
+### Features
+
+* Export SparkPost types ([5d925c4](https://github.com/wittignl/sparkpost/commit/5d925c4524601c2f06879bbf3fd5b7490b307f72))
+* Replaced undici for Axios for HTTP requests and implement send-test-mail script ([245ae8e](https://github.com/wittignl/sparkpost/commit/245ae8eeb5b84c5b5b5f007e94abfd29121aebcc))
+
 ## [1.0.5](https://github.com/wittignl/sparkpost/compare/v1.0.4...v1.0.5) (2025-05-14)
 
 ### Bug Fixes
