@@ -1,10 +1,30 @@
-import type { CreateTransmission } from "sparkpost";
-import type { SparkPost } from './client';
+import type {
+    CreateTransmission,
+    Transmission,
+    TransmissionSummary,
+} from 'sparkpost';
 
+import type { SparkPost } from './client';
 import { formatPayload } from './utils';
-import type { RequestCb } from "./types";
+import type { RequestCb } from './types';
 
 const api = 'transmissions';
+
+export type TransmissionListOptions = {
+    campaign_id?: string;
+    template_id?: string;
+};
+
+export type TransmissionSendQueryOptions = {
+    num_rcpt_errors?: number;
+};
+
+/** Inner payload for a successful `transmissions.send` (inside `results`). */
+export type TransmissionSendResults = {
+    total_rejected_recipients: number;
+    total_accepted_recipients: number;
+    id: string;
+};
 
 export class Transmissions {
 
@@ -22,7 +42,16 @@ export class Transmissions {
      * @param {RequestCb} [callback]
      * @returns {Promise}
      */
-    list(options?: any, callback?: RequestCb): Promise<any> {
+    list(callback: RequestCb): Promise<{ results: TransmissionSummary[] }>;
+    list(
+        options: TransmissionListOptions,
+        callback: RequestCb
+    ): Promise<{ results: TransmissionSummary[] }>;
+    list(options?: TransmissionListOptions): Promise<{ results: TransmissionSummary[] }>;
+    list(
+        options?: TransmissionListOptions | RequestCb,
+        callback?: RequestCb
+    ): Promise<{ results: TransmissionSummary[] }> {
 
         // Handle optional options argument
         if (typeof options === 'function') {
@@ -31,9 +60,10 @@ export class Transmissions {
             options = {};
         }
 
+        const opts = options ?? {};
         const reqOpts = {
             uri: api,
-            qs: options
+            qs: opts
         };
 
         return this.client.get(reqOpts, callback);
@@ -46,7 +76,7 @@ export class Transmissions {
      * @param {RequestCb} [callback]
      * @returns {Promise}
      */
-    get(id: string, callback?: RequestCb): Promise<any> {
+    get(id: string, callback?: RequestCb): Promise<{ results: Transmission }> {
 
         if (typeof id !== 'string') {
 
@@ -68,13 +98,33 @@ export class Transmissions {
      * @param {RequestCb} [callback]
      * @returns {Promise}
      */
-    send(transmission: CreateTransmission, options?: any, callback?: RequestCb): Promise<any> {
+    send(transmission: CreateTransmission, callback: RequestCb): Promise<{ results: TransmissionSendResults }>;
+    send(
+        transmission: CreateTransmission,
+        options: TransmissionSendQueryOptions,
+        callback: RequestCb
+    ): Promise<{ results: TransmissionSendResults }>;
+    send(
+        transmission: CreateTransmission,
+        options?: TransmissionSendQueryOptions
+    ): Promise<{ results: TransmissionSendResults }>;
+    send(
+        transmission: CreateTransmission,
+        options?: TransmissionSendQueryOptions | RequestCb,
+        callback__?: RequestCb
+    ): Promise<{ results: TransmissionSendResults }> {
+
+        let callback = callback__;
+        let query: TransmissionSendQueryOptions = {};
 
         // Handle optional options argument
         if (typeof options === 'function') {
 
             callback = options;
-            options = {};
+        }
+        else if (options !== undefined) {
+
+            query = options;
         }
 
         if (!transmission || typeof transmission !== 'object') {
@@ -82,12 +132,12 @@ export class Transmissions {
             return this.client.reject(new Error('transmission object is required'), callback);
         }
 
-        transmission = formatPayload(transmission);
+        const payload = formatPayload(transmission);
 
         const reqOpts = {
             uri: api,
-            json: transmission,
-            qs: options
+            json: payload,
+            qs: query
         };
 
         return this.client.post(reqOpts, callback);

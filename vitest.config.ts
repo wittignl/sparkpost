@@ -1,6 +1,17 @@
-import { defineConfig } from 'vitest/config';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+import { configDefaults, defineConfig } from 'vitest/config';
+
+const dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
-    // Configure Vitest (https://vitest.dev/config/)
-    test: {}
+    resolve: {
+        alias: {
+            '@': path.resolve(dirname, 'src')
+        }
+    },
+    test: {
+        exclude: [...configDefaults.exclude, '.old/**']
+    }
 });

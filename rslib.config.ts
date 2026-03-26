@@ -1,7 +1,5 @@
 import { defineConfig } from '@rslib/core';
 
-import { version } from './package.json';
-
 export default defineConfig({
     lib: [
         {
@@ -14,11 +12,6 @@ export default defineConfig({
             syntax: 'es2022'
         }
     ],
-    source: {
-        define: {
-            VERSION: JSON.stringify(version)
-        }
-    },
     output: {
         minify: true
     }

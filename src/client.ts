@@ -2,8 +2,9 @@ import type { SparkPostError } from '@/types';
 
 import { resolve as urlResolve } from 'node:url';
 
+import axios, { type AxiosResponse } from 'axios';
+import { version as packageVersion } from '../package.json';
 import { isObject, isPlainObject, merge } from 'es-toolkit/compat';
-import { request } from 'undici';
 
 import { InboundDomains, SendingDomains } from '@/domains';
 import { withCallback } from '@/utils';
@@ -14,8 +15,6 @@ import { Subaccounts } from './subaccounts';
 import { Templates } from './templates';
 import { Transmissions } from './transmissions';
 import { RelayWebhooks, Webhooks } from './webhooks';
-
-declare const VERSION: string;
 
 export interface SparkPostOptions {
 
@@ -61,7 +60,19 @@ const handleOptions = (apiKey: string | SparkPostOptions, options?: SparkPostOpt
     return options;
 };
 
-const createSparkPostError = (res: any, body: any): SparkPostError => {
+const getSparkPostStatusMessage = (response: AxiosResponse): string => {
+
+    const headers = response.headers;
+    const fromHeader =
+        typeof (headers as { get?: (key: string) => string | undefined }).get === 'function'
+            ? (headers as { get: (key: string) => string | undefined }).get('status-message')
+            : (headers as Record<string, string | undefined>)['status-message']
+              ?? (headers as Record<string, string | undefined>)['status-message'.toLowerCase()];
+
+    return fromHeader || response.statusText || String(response.status);
+};
+
+const createSparkPostError = (res: { statusCode: number; statusMessage: string }, body: any): SparkPostError => {
 
     const err: SparkPostError = new Error(res.statusMessage);
     body = body || {};
@@ -114,12 +125,12 @@ export class SparkPost {
         }
 
         // adding version to object
-        this.version = VERSION;
+        this.version = packageVersion;
 
         // setting up default headers
         this.defaultHeaders = merge(
             {
-                'User-Agent': createVersionStr(VERSION, options),
+                'User-Agent': createVersionStr(packageVersion, options),
                 'Content-Type': 'application/json'
             },
             options.headers
@@ -175,37 +186,51 @@ export class SparkPost {
         options.debug = (typeof options.debug === 'boolean') ? options.debug : this.debug;
 
         return withCallback(
-            new Promise((resolve, reject) => {
+            (async (): Promise<any> => {
 
-                request(options)
-                    .then(({ statusCode, headers, body }): void => {
+                const method = String(options.method || 'GET').toUpperCase();
+                const rawJson = options.json;
+                const sendJsonBody =
+                    rawJson !== undefined &&
+                    rawJson !== true &&
+                    method !== 'GET' &&
+                    method !== 'HEAD' &&
+                    method !== 'DELETE';
 
-                        const invalidCodeRegex = /(5|4)[0-9]{2}/;
-                        let response: any;
+                const axiosResponse: AxiosResponse = await axios.request({
+                    url: options.uri,
+                    method,
+                    headers: options.headers,
+                    params: options.qs,
+                    data: sendJsonBody ? rawJson : undefined,
+                    validateStatus: (): boolean => true,
+                    decompress: options.gzip !== false
+                });
 
-                        if (invalidCodeRegex.test(statusCode.toString())) {
+                const statusCode = axiosResponse.status;
+                const invalidCodeRegex = /(5|4)[0-9]{2}/;
 
-                            const err = createSparkPostError(
-                                { statusCode, statusMessage: headers['status-message'] },
-                                body
-                            );
-                            reject(err);
-                        }
-                        else {
+                if (invalidCodeRegex.test(String(statusCode))) {
 
-                            response = body;
-                            if (options.debug) {
+                    const err = createSparkPostError(
+                        { statusCode, statusMessage: getSparkPostStatusMessage(axiosResponse) },
+                        axiosResponse.data
+                    );
+                    throw err;
+                }
 
-                                response.debug = { statusCode, headers };
-                            }
-                            resolve(response);
-                        }
-                    })
-                    .catch((err): void => {
+                const response: any = axiosResponse.data;
+                if (options.debug) {
 
-                        reject(err);
-                    });
-            }),
+                    const dbg = { statusCode, headers: axiosResponse.headers };
+
+                    if (typeof response === 'object' && response !== null) {
+
+                        response.debug = dbg;
+                    }
+                }
+                return response;
+            })(),
             callback
         );
     }
