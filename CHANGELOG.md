@@ -1,3 +1,9 @@
+## [1.1.1](https://github.com/wittignl/sparkpost/compare/v1.1.0...v1.1.1) (2026-03-26)
+
+### Bug Fixes
+
+* 1.1.1 (trigger release version) ([f076318](https://github.com/wittignl/sparkpost/commit/f076318be5c598222ee0d3fcd6486f39be382936))
+
 ## [1.1.0](https://github.com/wittignl/sparkpost/compare/v1.0.5...v1.1.0) (2026-03-26)
 
 ### Features
